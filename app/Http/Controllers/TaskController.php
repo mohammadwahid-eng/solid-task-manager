@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\TaskCreation;
 use App\Interfaces\TaskRepositoryInterface;
 use Illuminate\Http\Request;
 
@@ -38,7 +39,9 @@ class TaskController extends Controller
             'description' => 'required',
         ]);
 
-        $this->taskRepository->create($data);
+        $task = $this->taskRepository->create($data);
+
+        TaskCreation::dispatch($task);
 
         return redirect()->route('tasks.index')->with('success', 'Task created successfully.');
     }
