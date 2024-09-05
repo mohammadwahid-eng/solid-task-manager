@@ -3,11 +3,12 @@
 namespace App\Listeners;
 
 use App\Events\TaskCreation;
+use App\Mail\TaskCreated;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Facades\Mail;
 
-class TaskListener
-{
+class TaskListener{
     /**
      * Create the event listener.
      */
@@ -19,8 +20,8 @@ class TaskListener
     /**
      * Handle the event.
      */
-    public function handle(TaskCreation $task): void
+    public function handle(TaskCreation $event): void
     {
-        dd($task);
+        Mail::to('wahid@gmail.com')->send(new TaskCreated($event->task));
     }
 }
